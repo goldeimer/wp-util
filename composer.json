@@ -13,5 +13,8 @@
         "branch-alias": {
             "dev-master": "0.2-dev"
         }
+    },
+    "require": {
+        "myclabs/php-enum": "^1.7"
     }
 }

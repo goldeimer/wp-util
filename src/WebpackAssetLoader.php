@@ -4,36 +4,67 @@ declare(strict_types=1);
 
 namespace Goldeimer\WordPress\WpUtil;
 
-final class WebpackAssetLoader extends StaticWebpackAssetLoader
+final class WebpackAssetLoader
 {
-    private $pkgAbspath = '';
-    private $shouldEnqueue = '';
+    private array $enqueueables = [];
 
     public function __construct(
-        $pkgAbspath = null,
-        $shouldEnqueue = true
+        string $baseUri,
+        string $pkgAbspath
     ) {
-        $this->pkgAbspath = $pkgAbspath;
-        $this->shouldEnqueue = $shouldEnqueue;
+        $this->enqueueables = self::parseManifest($baseUri, $pkgAbspath);
     }
 
-    public function register($pkgAbspath = null)
+    public function enqueue()
     {
-        if ($pkgAbspath) {
-            $this->pkgAbspath = $pkgAbspath;
+        $this->eachEnqueueable('enqueue');
+    }
+
+    public function register()
+    {
+        $this->eachEnqueueable('register');
+    }
+
+    final private function eachEnqueueable(string $function): void
+    {
+        foreach ($this->enqueueables as $enqueueable) {
+            $enqueueable->$function();
+        }
+    }
+
+    final private static function parseManifest(
+        string $baseUri,
+        string $pkgAbspath
+    ): array {
+        $enqueueables = [];
+        $manifest = self::readManifest($pkgAbspath);
+
+        foreach ($manifest['entrypoints'] as $entrypoint) {
+            foreach ($entrypoint as $sourceType => $assets) {
+                foreach ($assets as $relpath) {
+                    switch ($sourceType) {
+                        case 'css':
+                            $enqueueables[] = new WordPressEnqueableStyle($baseUri, $relpath);
+                            break;
+
+                        case 'js':
+                            $enqueueables[] = new WordPressEnqueableScript($baseUri, $relpath);
+                            break;
+                    }
+                }
+            }
         }
 
-        \add_action(
-            'wp_enqueue_scripts',
-            [$this, 'registerAssetsCallback']
-        );
+        return $enqueueables;
     }
 
-    public function registerAssetsCallback()
+    final private static function readManifest(string $pkgAbspath): array
     {
-        self::registerAssets(
-            $this->pkgAbspath,
-            $this->shouldEnqueue
+        return json_decode(
+            file_get_contents(
+                $pkgAbspath . '/static/artifacts/manifest.json'
+            ),
+            true
         );
     }
 }
