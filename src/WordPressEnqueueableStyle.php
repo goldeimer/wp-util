@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Goldeimer\WordPress\WpUtil;
 
-final class WordPressEnqueableStyle
+final class WordPressEnqueueableStyle
 {
-    use WordPressEnqueable;
+    use WordPressEnqueueable;
 
     final public function __construct(
         string $baseUri,

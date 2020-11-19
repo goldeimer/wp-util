@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Goldeimer\WordPress\WpUtil;
 
-trait WordPressEnqueable
+trait WordPressEnqueueable
 {
-    private string $uri;
-    private string $relpath;
-    private string $handle;
+    private $uri;
+    private $relpath;
+    private $handle;
 
-    private static AssetType $type;
+    private static $type;
 
     final public function handle(): string
     {

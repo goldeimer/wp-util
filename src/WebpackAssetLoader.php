@@ -6,7 +6,7 @@ namespace Goldeimer\WordPress\WpUtil;
 
 final class WebpackAssetLoader
 {
-    private array $enqueueables = [];
+    private $enqueueables = [];
 
     public function __construct(
         string $baseUri,
@@ -44,11 +44,11 @@ final class WebpackAssetLoader
                 foreach ($assets as $relpath) {
                     switch ($sourceType) {
                         case 'css':
-                            $enqueueables[] = new WordPressEnqueableStyle($baseUri, $relpath);
+                            $enqueueables[] = new WordPressEnqueueableStyle($baseUri, $relpath);
                             break;
 
                         case 'js':
-                            $enqueueables[] = new WordPressEnqueableScript($baseUri, $relpath);
+                            $enqueueables[] = new WordPressEnqueueableScript($baseUri, $relpath);
                             break;
                     }
                 }
