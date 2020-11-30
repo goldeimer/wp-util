@@ -17,6 +17,15 @@ final class WebpackAssetLoader
 
     public function enqueue()
     {
+        // TODO(Johannes):
+        // This is a not at all thought through, ad-hoc early exit
+        // based on a hard-coded, static condition.
+        // --> Make dynamic.
+        // --> Pass a flag? Encode in handle / filename?
+        if (\is_admin()) {
+            return;
+        }
+
         $this->eachEnqueueable('enqueue');
     }
 
