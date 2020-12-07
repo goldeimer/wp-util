@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Goldeimer\WordPress\WpUtil;
 
 use MyCLabs\Enum\Enum;
