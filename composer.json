@@ -1,20 +1,21 @@
 {
-    "name": "goldeimer/wp-util",
-    "type": "library",
-    "description": "Goldeimer's WordPress utility library",
     "autoload": {
         "psr-4": {
             "Goldeimer\\WordPress\\WpUtil\\": "src"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "description": "Goldeimer's WordPress utility library",
     "extra": {
         "branch-alias": {
             "dev-master": "0.2-dev"
         }
     },
+    "license": "BSD-2-Clause",
+    "minimum-stability": "dev",
+    "name": "goldeimer/wp-util",
+    "prefer-stable": true,
     "require": {
         "myclabs/php-enum": "^1.7"
-    }
+    },
+    "type": "library"
 }
